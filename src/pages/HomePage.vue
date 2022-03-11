@@ -1,22 +1,51 @@
 <template>
-  <div
-    class="
-      home
-      flex-grow-1
-      d-flex
-      flex-column
-      align-items-center
-      justify-content-center
-    "
-  >
-    <CreatePost />
-    <Post />
+  <div class="container-fluid">
+    <div class="row">
+      <div
+        v-for="p in posts"
+        :key="p.id"
+        class="
+          home
+          flex-grow-1
+          d-flex
+          flex-column
+          align-items-center
+          justify-content-center
+        "
+      >
+        <CreatePost />
+        <Post :posts="p" />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import { computed, onMounted } from "@vue/runtime-core";
+import { postsService } from "../services/PostsService";
+import { AppState } from "../AppState";
+import Pop from "../utils/Pop";
+import { logger } from "../utils/Logger";
+import Post from "../components/Post.vue";
+import CreatePost from "../components/CreatePost.vue";
+
 export default {
+  components: { CreatePost },
+  components: { Post },
   name: "Home",
+  setup() {
+    onMounted(async () => {
+      try {
+        await postsService.getAllPosts();
+      } catch (error) {
+        logger.log(error.message);
+        Pop.toast(error.message, "error");
+      }
+    });
+    return {
+      posts: computed(() => AppState.posts),
+    };
+  },
 };
 </script>
 
@@ -39,3 +68,6 @@ export default {
   }
 }
 </style>
+
+
+

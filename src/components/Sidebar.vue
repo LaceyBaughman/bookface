@@ -3,7 +3,7 @@
     <router-link class="navbar-brand d-flex" :to="{ name: 'Account' }">
       <div class="d-flex flex-column align-items-center">
         <!--img here-->
-        Hello!
+        Account
       </div>
     </router-link>
   </div>

@@ -17,20 +17,22 @@
 
 
 <script>
-import { onMounted } from "@vue/runtime-core";
-import { AppState } from "../AppState";
+import { useRoute } from "vue-router";
+import { postsService } from "../services/PostsService";
+import { logger } from "../utils/Logger";
 
 export default {
-  props: {
-    posts: [
-      {
-        type: Object,
-        required: true,
-      },
-    ],
-  },
   setup() {
-    return {};
+    const route = useRoute;
+    watchEffect(async () => {
+      try {
+        await profilesService.getProfile(route.params.id);
+        await postsService.getAllPosts({ creatorId: route.params.id });
+      } catch (error) {
+        logger.log(error);
+        Pop.toast(error.message, "error");
+      }
+    });
   },
 };
 </script>

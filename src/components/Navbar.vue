@@ -1,11 +1,6 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-    <router-link class="navbar-brand d-flex" :to="{ name: 'Account' }">
-      <div class="d-flex flex-column align-items-center">
-        <!--img here-->
-      </div>
-    </router-link>
-    <!-- <button
+  <nav class="navbar navbar-expand-lg navbar-dark nav-bg px-3">
+    <button
       class="navbar-toggler"
       type="button"
       data-bs-toggle="collapse"
@@ -15,7 +10,7 @@
       aria-label="Toggle navigation"
     >
       <span class="navbar-toggler-icon" />
-    </button> -->
+    </button>
     <div class="collapse navbar-collapse" id="navbarText">
       <!-- <ul class="navbar-nav me-auto">
         <li>
@@ -105,6 +100,10 @@ export default {
 </script>
 
 <style scoped>
+.nav-bg {
+  background-color: rgb(195, 208, 211);
+}
+
 .dropdown-menu {
   user-select: none;
   display: block;

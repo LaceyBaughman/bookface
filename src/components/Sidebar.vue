@@ -1,5 +1,12 @@
 <template>
-  <div class="col-12 sb-arrange">Sidebar</div>
+  <div class="col-12 sb-arrange">
+    <router-link class="navbar-brand d-flex" :to="{ name: 'Account' }">
+      <div class="d-flex flex-column align-items-center">
+        <!--img here-->
+        Hello!
+      </div>
+    </router-link>
+  </div>
 </template>
 
 

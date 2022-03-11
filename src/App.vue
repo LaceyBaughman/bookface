@@ -1,30 +1,44 @@
 <template>
-  <header>
-    <Navbar />
-  </header>
-  <main>
-    <router-view />
-  </main>
-  <footer>
-    <div class="bg-dark text-light text-center p-4">
-      Made with 💖 by CodeWorks
+  <header></header>
+  <main class="main-bg debug">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-2">
+          <Sidebar />
+        </div>
+        <div class="col-md-10">
+          <div class="row">
+            <div class="col-md-12">
+              <Navbar />
+            </div>
+            <div class="col-md-12">
+              <router-view />
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </footer>
+  </main>
 </template>
 
 <script>
-import { computed } from 'vue'
-import { AppState } from './AppState'
+import { computed } from "vue";
+import { AppState } from "./AppState";
+import Sidebar from "./components/Sidebar.vue";
 export default {
-  name: 'App',
+  components: { Sidebar },
+  name: "App",
   setup() {
     return {
-      appState: computed(() => AppState)
-    }
-  }
-}
+      appState: computed(() => AppState),
+    };
+  },
+};
 </script>
 <style lang="scss">
 @import "./assets/scss/main.scss";
 
+.main-bg {
+  background-color: rgb(245, 249, 247);
+}
 </style>

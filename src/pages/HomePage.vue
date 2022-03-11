@@ -13,8 +13,8 @@
           justify-content-center
         "
       >
-        <CreatePost />
-        <Post :posts="p" />
+        <!-- <CreatePost /> -->
+        <Post :post="p" />
       </div>
     </div>
   </div>
@@ -43,6 +43,7 @@ export default {
       }
     });
     return {
+      page: computed(() => AppState.page),
       posts: computed(() => AppState.posts),
     };
   },

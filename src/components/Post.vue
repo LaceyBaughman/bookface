@@ -1,12 +1,19 @@
 <template>
   <div class="home-card p-4 bg-white rounded elevation-3 m-3">
     <div class="row m-2">
-      <div class="col-md-1">{{ posts.imgUrl }}</div>
-      <div class="col-md-11">{{ posts.creator }} {{ posts.createdAt }}</div>
+      <div class="col-md-1">
+        <img
+          :src="post.creator.picture"
+          class="selectable"
+          style="width: 70px"
+          alt=""
+        />
+      </div>
+      <div class="col-md-11">{{ post.creator }} {{ post.createdAt }}</div>
     </div>
     <div class="row m-2">
       <div class="col-md-12">
-        {{ posts.body }}
+        {{ post.body }}
       </div>
     </div>
     <div class="row m-2">
@@ -17,17 +24,14 @@
 
 
 <script>
-import { onMounted } from "@vue/runtime-core";
-import { AppState } from "../AppState";
+import { computed } from "@vue/reactivity";
 
 export default {
   props: {
-    posts: [
-      {
-        type: Object,
-        required: true,
-      },
-    ],
+    post: {
+      type: Object,
+      required: true,
+    },
   },
   setup() {
     return {};
@@ -38,3 +42,4 @@ export default {
 
 <style lang="scss" scoped>
 </style>
+

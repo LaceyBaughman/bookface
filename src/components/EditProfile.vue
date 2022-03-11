@@ -1,12 +1,12 @@
 <template>
   <div class="home-card p-4 bg-white rounded elevation-3 m-3">
     <div class="row m-2">
-      <div class="col-md-1">{{ posts.imgUrl }}</div>
-      <div class="col-md-11">{{ posts.creator }} {{ posts.createdAt }}</div>
+      <div class="col-md-1">{{ post.imgUrl }}</div>
+      <div class="col-md-11">{{ post.creator }} {{ post.createdAt }}</div>
     </div>
     <div class="row m-2">
       <div class="col-md-12">
-        {{ posts.body }}
+        {{ post.body }}
       </div>
     </div>
     <div class="row m-2">
@@ -23,16 +23,23 @@ import { logger } from "../utils/Logger";
 
 export default {
   setup() {
-    const route = useRoute;
+    const route = useRoute();
     watchEffect(async () => {
       try {
-        await profilesService.getProfile(route.params.id);
-        await postsService.getAllPosts({ creatorId: route.params.id });
+        if (route.name == "Profile") {
+          await profilesService.getProfile(route.params.id);
+          await postsService.getAll({ creatorId: route.params.id });
+        }
       } catch (error) {
-        logger.log(error);
+        logger.error(error);
         Pop.toast(error.message, "error");
       }
     });
+    return {
+      posts: computed(() => AppState.posts),
+      profile: computed(() => AppState.profile),
+      account: computed(() => AppState.account),
+    };
   },
 };
 </script>

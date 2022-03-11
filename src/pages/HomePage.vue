@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid">
     <div class="row" v-for="p in posts" :key="p.id">
-      <!-- <CreatePost /> -->
+      <CreatePost />
       <Post :post="p" />
     </div>
   </div>

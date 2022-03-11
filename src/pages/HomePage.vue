@@ -1,21 +1,8 @@
 <template>
   <div class="container-fluid">
-    <div class="row">
-      <div
-        v-for="p in posts"
-        :key="p.id"
-        class="
-          home
-          flex-grow-1
-          d-flex
-          flex-column
-          align-items-center
-          justify-content-center
-        "
-      >
-        <!-- <CreatePost /> -->
-        <Post :post="p" />
-      </div>
+    <div class="row" v-for="p in posts" :key="p.id">
+      <!-- <CreatePost /> -->
+      <Post :post="p" />
     </div>
   </div>
 </template>

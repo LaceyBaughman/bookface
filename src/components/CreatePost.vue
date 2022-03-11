@@ -12,9 +12,31 @@
 
 
 <script>
+import { useRoute } from "vue-router";
+import { AppState } from "../AppState";
+import { postsService } from "../services/PostsService";
+import { logger } from "../utils/Logger";
+import Pop from "../utils/Pop";
+
 export default {
   setup() {
-    return {};
+    const route = useRoute();
+    watchEffect(async () => {
+      try {
+        if (route.name == "Profile") {
+          await profilesService.getProfile(route.params.id);
+          await postsService.getAll({ creatorId: route.params.id });
+        }
+      } catch (error) {
+        logger.error(error);
+        Pop.toast(error.message, "error");
+      }
+    });
+    return {
+      posts: computed(() => AppState.posts),
+      profile: computed(() => AppState.profile),
+      account: computed(() => AppState.account),
+    };
   },
 };
 </script>

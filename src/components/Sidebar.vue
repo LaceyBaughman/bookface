@@ -1,7 +1,7 @@
 <template>
   <div
     class="sb-arrange d-flex flex-column flex-shrink-0 p-3"
-    style="width: 280px"
+    style="width: fill"
   >
     <div class="dropdown">
       <a

@@ -1,7 +1,7 @@
 <template>
   <header></header>
   <main class="main-bg debug">
-    <div class="container-fluid">
+    <div class="">
       <div class="row">
         <div class="col-md-2">
           <Sidebar />

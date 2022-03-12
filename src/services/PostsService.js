@@ -8,6 +8,7 @@ class PostsService {
     logger.log('[PostsService:]', res.data)
 
     AppState.posts = res.data.posts
+    AppState.posts = res.data.posts.map(p => new Post(p))
   }
 
   async createPost() {

@@ -1,7 +1,7 @@
 <template>
   <div class="body d-flex justify-content-between p-2 px-3 body">
     <div class="body d-flex flex-row align-items-center">
-      <img :src="post.creator.picture" class="rounded-circle" width="50" />
+      <img :src="post.creator.picture" class="rounded-image" width="50" />
       <div class="d-flex flex-column">
         <span class="name font-weight-bold mx-2">{{ post.creator.name }}</span>
       </div>

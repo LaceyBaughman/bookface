@@ -1,6 +1,7 @@
 <template>
   <form @submit.prevent="createPost()">
     <div>
+      <label for="img" class="form-label">Create Post:</label>
       <textarea
         type="text"
         name="body"
@@ -11,19 +12,19 @@
         v-model="newPost.body"
       ></textarea>
     </div>
-    <div class="for-the-love-of-god">
+    <div class="for-the-love-of-god d-inline">
       <label for="img" class="form-label">Add Image:</label>
 
       <input
         type="url"
         name="imgUrl"
         id="imgUrl"
-        class="form-control"
+        class="form-control d-inline"
         aria-describedby="helpId"
         v-model="newPost.imgUrl"
       />
 
-      <button class="btn btn-primary btn-xs">Post</button>
+      <button class="btn btn-primary post-it">Post</button>
     </div>
   </form>
 </template>
@@ -55,11 +56,12 @@ export default {
       newPost,
       async createPost() {
         try {
-          let newPost = await postsService.createPost(newPost.value);
+          await postsService.createPost(newPost.value);
+          newPost = {};
           router.push({ name: "Home", params: { id: newPost.id } });
         } catch (error) {
           Pop.toast(error.message, "error");
-          logger.log(error.message);
+          logger.log("[CreatePost]", error.message);
         }
       },
     };
@@ -70,6 +72,10 @@ export default {
 <style>
 .form-control {
   border-radius: 5px;
-  margin: 1em;
+  margin-bottom: 1em;
+}
+
+.post-it {
+  align-self: flex-end;
 }
 </style>

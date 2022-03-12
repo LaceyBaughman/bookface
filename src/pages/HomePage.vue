@@ -15,24 +15,19 @@ import { postsService } from "../services/PostsService";
 import { AppState } from "../AppState";
 import Pop from "../utils/Pop";
 import { logger } from "../utils/Logger";
-import Post from "../components/Post.vue";
-import CreatePost from "../components/CreatePost.vue";
 
 export default {
-  components: { CreatePost },
-  components: { Post },
   name: "Home",
   setup() {
     onMounted(async () => {
       try {
         await postsService.getAllPosts();
       } catch (error) {
-        logger.log(error.message);
+        logger.log("[HomePage]", error.message);
         Pop.toast(error.message, "error");
       }
     });
     return {
-      page: computed(() => AppState.page),
       posts: computed(() => AppState.posts),
     };
   },

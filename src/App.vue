@@ -6,7 +6,7 @@
         <div class="col-md-2 px-0">
           <Sidebar />
         </div>
-        <div class="col-md-10">
+        <div class="col-md-6">
           <div class="row">
             <div class="col-md-12 px-0">
               <Navbar />

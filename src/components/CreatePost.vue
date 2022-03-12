@@ -1,59 +1,65 @@
 <template>
-  <div class="home-card p-4 bg-white rounded elevation-3 m-3">
-    <form @submit.prevent="createPost" class="input-group">
-      <div class="input-group">
-        <button
-          class="btn btn-outline-primary"
-          @click.prevent="createPost"
-          type="submit"
-          id="button-addon1"
-        >
-          Create Post:
-        </button>
-        <input
-          v-model="state.editable.body"
-          type="text"
-          class="form-control"
-          placeholder=". . ."
-          aria-label="Example text with button addon"
-          aria-describedby="button-addon1"
-        />
-        <input
-          v-model="state.editable.imgUrl"
-          type="url"
-          class="form-control"
-          placeholder="image link"
-          aria-label="Example text with button addon"
-          aria-describedby="button-addon1"
-        />
-      </div>
-    </form>
-  </div>
+  <form @submit.prevent="createPost()">
+    <div>
+      <textarea
+        type="text"
+        name="body"
+        id="body"
+        class="form-control m-1"
+        placeholder="Enlighten us..."
+        aria-describedby="helpId"
+        v-model="newPost.body"
+      ></textarea>
+    </div>
+    <div class="for-the-love-of-god">
+      <label for="img" class="form-label">Add Image:</label>
+
+      <input
+        type="url"
+        name="imgUrl"
+        id="imgUrl"
+        class="form-control"
+        aria-describedby="helpId"
+        v-model="newPost.imgUrl"
+      />
+
+      <button class="btn btn-primary btn-xs">Post</button>
+    </div>
+  </form>
 </template>
 
-
-
-
 <script>
-import { reactive } from "@vue/reactivity";
 import { postsService } from "../services/PostsService";
 import { logger } from "../utils/Logger";
 import Pop from "../utils/Pop";
+import { AppState } from "../AppState";
+import { ref } from "@vue/reactivity";
+import { useRouter } from "vue-router";
+import { watchEffect } from "@vue/runtime-core";
 
 export default {
-  setup() {
-    const state = reactive({
-      editable: {},
+  props: {
+    post: {
+      type: Object,
+      required: true,
+      default: {},
+    },
+  },
+  setup(props) {
+    const newPost = ref({});
+    const router = useRouter();
+    watchEffect(() => {
+      newPost.value = props.post;
     });
     return {
-      state,
+      newPost,
       async createPost() {
         try {
-          await postsService.createPost(state.editable);
-          state.editable = {};
+          let newPost = await postsService.createPost(newPost.value);
+          router.push({ name: "Home", params: { id: newPost.id } });
         } catch (error) {
-          logger.error(error);
           Pop.toast(error.message, "error");
+          logger.log(error.message);
         }
       },
     };
@@ -61,6 +67,9 @@ export default {
 };
 </script>
 
-
-<style lang="scss" scoped>
+<style>
+.form-control {
+  border-radius: 5px;
+  margin: 1em;
+}
 </style>

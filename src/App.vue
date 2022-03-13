@@ -16,8 +16,8 @@
             <div class="col-md-10 px-0">
               <router-view />
             </div>
-            <div class="col-md-2" v-for="s in square" :key="s.id">
-              <Billboards :square="s" />
+            <div class="col-md-2" v-for="s in square" :key="s.title">
+              <Squares :square="s" />
             </div>
           </div>
         </div>
@@ -27,26 +27,14 @@
 </template>
 
 <script>
-import { computed, onMounted } from "@vue/runtime-core";
+import { computed } from "@vue/runtime-core";
 import { AppState } from "./AppState";
-import { squaresService } from "../services/SquaresService";
-import Pop from "../utils/Pop";
-import { logger } from "../utils/Logger";
 
 export default {
   name: "App",
   setup() {
-    onMounted(async () => {
-      try {
-        await squaresService.getSquares();
-      } catch (error) {
-        logger.log("[SquareComponent]", error.message);
-        Pop.toast(error.message, "error");
-      }
-    });
     return {
       appState: computed(() => AppState),
-      posts: computed(() => AppState.posts),
       squares: computed(() => AppState.squares),
     };
   },

@@ -7,5 +7,7 @@ export const AppState = reactive({
   page: '',
   posts: [],
   creator: {},
-  squares: []
+  squares: [],
+  prevPage: '',
+  nextPage: '',
 })

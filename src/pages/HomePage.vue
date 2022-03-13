@@ -15,6 +15,7 @@ import { postsService } from "../services/PostsService";
 import { AppState } from "../AppState";
 import Pop from "../utils/Pop";
 import { logger } from "../utils/Logger";
+import { squaresService } from "../services/SquaresService";
 
 export default {
   name: "Home",
@@ -22,6 +23,7 @@ export default {
     onMounted(async () => {
       try {
         await postsService.getAllPosts();
+        await squaresService.getSquares();
       } catch (error) {
         logger.log("[HomePage]", error.message);
         Pop.toast(error.message, "error");
@@ -29,6 +31,11 @@ export default {
     });
     return {
       posts: computed(() => AppState.posts),
+      squares: computed(() => AppState.squares),
+      account: computed(() => AppState.account),
+      page: computed(() => AppState.page),
+      prevPage: computed(() => AppState.prevPage),
+      nextPage: computed(() => AppState.nextPage),
     };
   },
 };

@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="createPost">
+  <form v-if="account.id" @submit.prevent="createPost">
     <div>
       <label for="img" class="form-label">Create Post:</label>
       <textarea
@@ -21,6 +21,7 @@
         id="imgUrl"
         class="form-control d-inline"
         aria-describedby="helpId"
+        placeholder="This had better be good..."
         v-model="state.editable.imgUrl"
       />
 

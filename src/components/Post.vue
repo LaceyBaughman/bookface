@@ -1,13 +1,21 @@
 <template>
   <div class="body d-flex justify-content-between p-2 px-3 body">
-    <div class="body d-flex flex-row align-items-center">
-      <img :src="post.creator.picture" class="rounded-image" width="50" />
+    <div
+      class="body d-flex flex-row align-items-center justify-content-between"
+    >
+      <router-link :to="{ name: 'Profile' }">
+        <img :src="post.creator.picture" class="rounded-image" width="50" />
+      </router-link>
       <div class="d-flex flex-column">
-        <span class="name font-weight-bold mx-2">{{ post.creator.name }}</span>
+        <h4 class="name font-weight-bold mx-2">{{ post.creator.name }}</h4>
       </div>
-    </div>
-    <div class="d-flex flex-row mt-1">
-      <small class="mr-2"> {{ post.creator.createdAt }}</small>
+      <span
+        ><h2 v-if="account.id == post.creatorId">
+          <i
+            @click="deletePost(post.id)"
+            class="mdi mdi-delete f-20 selectable"
+          ></i></h2
+      ></span>
     </div>
   </div>
   <img :src="post.imgUrl" class="img-fluid" />
@@ -17,14 +25,13 @@
       {{ post.body }}
     </p>
     <hr />
+    <div class="post-footer justify-content-between">
+      <h2 v-if="account.id" @click="like(post.id)">
+        {{ post.likes.length }}<i class="mdi text-danger mdi-heart-circle"></i>
+      </h2>
 
-    <button
-      v-if="account.id"
-      @click="like(post.id)"
-      class="btn btn-sm btn-primary mx-1"
-    >
-      {{ post.likes.length }}<i class="mdi text-danger mdi-heart-circle"></i>
-    </button>
+      <small> {{ timeStamp() }}</small>
+    </div>
   </div>
 </template>
 
@@ -33,6 +40,8 @@
 import { computed } from "@vue/reactivity";
 import { AppState } from "../AppState";
 import { postsService } from "../services/PostsService";
+import Pop from "../utils/Pop";
+import { logger } from "../utils/Logger";
 
 export default {
   props: {
@@ -43,12 +52,25 @@ export default {
   },
   setup(props) {
     return {
+      account: computed(() => AppState.account),
       posts: computed(() => AppState.posts),
       async like(id) {
         try {
           await postsService.like(id);
         } catch (error) {
           logger.error(error);
+          Pop.toast(error.message, "error");
+        }
+      },
+      timeStamp() {
+        const stamp = new Date(props.post.createdAt);
+        return stamp;
+      },
+      async deletePost(id) {
+        try {
+          await postsService.deletePost(id);
+        } catch (error) {
+          console.error(error);
           Pop.toast(error.message, "error");
         }
       },
@@ -82,5 +104,9 @@ hr {
   right: 13px;
   top: 8px;
   color: #a09c9c;
+}
+
+.post-footer {
+  flex-direction: row;
 }
 </style>

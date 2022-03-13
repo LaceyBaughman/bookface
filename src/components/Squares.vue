@@ -1,5 +1,7 @@
 <template>
-  <div class="component"><img :src="square.square" class="billboard" /></div>
+  <a href="https://boisecodeworks.com/">
+    <img class="square-style" :src="square.tall"
+  /></a>
 </template>
 
 
@@ -19,7 +21,9 @@ export default {
 
 
 <style lang="scss" scoped>
-.billboard {
-  max-width: 200px;
+.square-style {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  max-width: 250px;
 }
 </style>

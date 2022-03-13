@@ -7,9 +7,8 @@ import { api } from "./AxiosService"
 class SquaresService {
   async getSquares() {
     const res = await api.get('api/ads')
-    logger.log('[BillsService:]', res.data)
-
     AppState.squares = res.data
+    logger.log('[BillsService:]', res.data)
   }
 
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid">
-    <div class="col-md-12 card post elevation-3">
+    <div v-if="account.id" class="col-md-12 card post elevation-3">
       <CreatePost v-if="account.id" />
     </div>
     <div class="col-md-12 card post elevation-3" v-for="p in posts" :key="p.id">

@@ -11,11 +11,20 @@ class PostsService {
     AppState.posts = res.data.posts.map(p => new Post(p))
   }
 
-  async createPost() {
-    const res = await api.post('api/posts')
+  async createPost(data) {
+    const res = await api.post('api/posts', data)
     logger.log('[PostServ: Create]', res.data)
 
-    AppState.posts = res.data.posts
+    AppState.posts.unshift(res.data)
+  }
+
+  async like(id) {
+    const posts = AppState.posts
+    const res = await api.post(`api/posts/${id}/like`)
+    const index = posts.findIndex(p => p.id == res.data.id)
+    posts.splice(index, 1, res.data)
+    // find post by id, find index, splice and replace with new
+    // logger.log('like: ', res.data)
   }
 
 

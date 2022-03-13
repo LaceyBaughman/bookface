@@ -18,15 +18,22 @@
     </p>
     <hr />
 
-    <span>
-      <h2><i class="mdi text-danger mdi-heart-circle"></i></h2
-    ></span>
-    <span class="ml-2">{{ post.likes.value }}</span>
+    <button
+      v-if="account.id"
+      @click="like(post.id)"
+      class="btn btn-sm btn-primary mx-1"
+    >
+      {{ post.likes.length }}<i class="mdi text-danger mdi-heart-circle"></i>
+    </button>
   </div>
 </template>
 
 
 <script>
+import { computed } from "@vue/reactivity";
+import { AppState } from "../AppState";
+import { postsService } from "../services/PostsService";
+
 export default {
   props: {
     post: {
@@ -34,8 +41,18 @@ export default {
       required: true,
     },
   },
-  setup() {
-    return {};
+  setup(props) {
+    return {
+      posts: computed(() => AppState.posts),
+      async like(id) {
+        try {
+          await postsService.like(id);
+        } catch (error) {
+          logger.error(error);
+          Pop.toast(error.message, "error");
+        }
+      },
+    };
   },
 };
 </script>

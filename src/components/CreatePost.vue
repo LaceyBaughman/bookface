@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="createPost()">
+  <form @submit.prevent="createPost">
     <div>
       <label for="img" class="form-label">Create Post:</label>
       <textarea
@@ -9,7 +9,7 @@
         class="form-control m-1"
         placeholder="Enlighten us..."
         aria-describedby="helpId"
-        v-model="newPost.body"
+        v-model="state.editable.body"
       ></textarea>
     </div>
     <div class="for-the-love-of-god d-inline">
@@ -21,7 +21,7 @@
         id="imgUrl"
         class="form-control d-inline"
         aria-describedby="helpId"
-        v-model="newPost.imgUrl"
+        v-model="state.editable.imgUrl"
       />
 
       <button class="btn btn-primary post-it">Post</button>
@@ -33,32 +33,17 @@
 import { postsService } from "../services/PostsService";
 import { logger } from "../utils/Logger";
 import Pop from "../utils/Pop";
-import { AppState } from "../AppState";
-import { ref } from "@vue/reactivity";
-import { useRouter } from "vue-router";
-import { watchEffect } from "@vue/runtime-core";
+import { reactive } from "@vue/reactivity";
 
 export default {
-  props: {
-    post: {
-      type: Object,
-      required: true,
-      default: {},
-    },
-  },
-  setup(props) {
-    const newPost = ref({});
-    const router = useRouter();
-    watchEffect(() => {
-      newPost.value = props.post;
-    });
+  setup() {
+    const state = reactive({ editable: {} });
     return {
-      newPost,
+      state,
       async createPost() {
         try {
-          await postsService.createPost(newPost.value);
-          newPost = {};
-          router.push({ name: "Home", params: { id: newPost.id } });
+          await postsService.createPost(state.editable);
+          state.editable = {};
         } catch (error) {
           Pop.toast(error.message, "error");
           logger.log("[CreatePost]", error.message);

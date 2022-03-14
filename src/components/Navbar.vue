@@ -30,24 +30,21 @@
 
 <script>
 import { AuthService } from "../services/AuthService";
-import { AppState } from "../AppState";
-import { computed, ref } from "vue";
+import { ref } from "vue";
 import Pop from "../utils/Pop";
 import { postsService } from "../services/PostsService";
-import { profilesService } from "../services/ProfilesService";
-import { router } from "../router";
+import { logger } from "../utils/Logger";
+
 export default {
   setup() {
-    const query = ref("");
+    const searchTerm = ref("");
     return {
-      query,
-      user: computed(() => AppState.user),
+      searchTerm,
       async search() {
         try {
-          await profilesService.findProfile(query.value);
-          await postsService.findPost(query.value);
-          router.push({ name: "Search" });
+          await postsService.getAllPosts({ query: searchTerm.value });
         } catch (error) {
+          logger.error("[NavSearch]", error);
           Pop.toast(error.message, "error");
         }
       },

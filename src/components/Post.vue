@@ -4,7 +4,12 @@
       class="body d-flex flex-row align-items-center justify-content-between"
     >
       <router-link :to="{ name: 'Profile' }">
-        <img :src="post.creator.picture" class="rounded-image" width="50" />
+        <img
+          @click="goTo('Profile')"
+          :src="post.creator.picture"
+          class="rounded-image"
+          width="50"
+        />
       </router-link>
       <div class="d-flex flex-column">
         <h4 class="name font-weight-bold mx-2">{{ post.creator.name }}</h4>
@@ -42,6 +47,7 @@ import { AppState } from "../AppState";
 import { postsService } from "../services/PostsService";
 import Pop from "../utils/Pop";
 import { logger } from "../utils/Logger";
+import { useRouter } from "vue-router";
 
 export default {
   props: {
@@ -51,9 +57,17 @@ export default {
     },
   },
   setup(props) {
+    const router = useRouter();
     return {
       account: computed(() => AppState.account),
       posts: computed(() => AppState.posts),
+      router,
+      async gotTo(page) {
+        router.push({
+          name: page,
+          params: { id: props.post.creator.id },
+        });
+      },
       async like(id) {
         try {
           await postsService.like(id);

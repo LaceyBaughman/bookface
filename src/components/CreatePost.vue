@@ -1,5 +1,5 @@
 <template>
-  <form v-if="account.id" @submit.prevent="createPost">
+  <form @submit.prevent="createPost">
     <div>
       <label for="img" class="form-label">Create Post:</label>
       <textarea

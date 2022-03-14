@@ -5,19 +5,15 @@ import { api } from "./AxiosService"
 
 
 class PostsService {
-  async getAllPosts() {
-    const res = await api.get('api/posts')
+  async getAllPosts(query = {}) {
+    const res = await api.get('api/posts', { params: query })
     logger.log('[PostsService:]', res.data)
 
     AppState.posts = res.data.posts
-    AppState.posts = res.data.posts.map(p => new Post(p))
+    // AppState.posts = res.data.posts.map(p => new Post(p))
   }
 
-  async findPosts(query) {
-    const res = await api.get(`api/posts?query=${query}`)
-    AppState.posts = res.data
-    logger.log('[PostsServ: Query]', res.data)
-  }
+
 
   async createPost(data) {
     const res = await api.post('api/posts', data)

@@ -1,32 +1,37 @@
 <template>
-  <div class="container-fluid text-center">
-    <div class="row">
-      <div class="col-md-8 p-0">
-        <CreatePost v-if="account.id" />
-      </div>
-      <div
-        v-for="p in posts"
-        :key="p.id"
-        class="col-md-8 card elevation-3 m-4 justify-content-center"
-      >
-        <Post :post="p" />
-      </div>
+  <div class="container-fluid">
+    <div class="col-md-12 card post elevation-3">
+      <CreatePost v-if="account.id" />
+    </div>
+    <div class="col-md-12 card post elevation-3" v-for="p in posts" :key="p.id">
+      <Post :post="p" />
     </div>
   </div>
 </template>
+
+
 <script>
+import { useRoute } from "vue-router";
 import { computed } from "@vue/reactivity";
 import { AppState } from "../AppState";
-import { onMounted, watchEffect } from "@vue/runtime-core";
+import { watchEffect } from "@vue/runtime-core";
 import Pop from "../utils/Pop";
 import { logger } from "../utils/Logger";
 import { postsService } from "../services/PostsService";
-import { useRoute } from "vue-router";
 import { profilesService } from "../services/ProfilesService";
+
 export default {
   name: "Profile",
   setup() {
     const route = useRoute();
+    onMounted(async () => {
+      try {
+        await postsService.getAllPosts();
+      } catch (error) {
+        logger.log("[ProfilePage]", error.message);
+        Pop.toast(error.message, "error");
+      }
+    });
     watchEffect(async () => {
       try {
         if (route.name == "Profile") {

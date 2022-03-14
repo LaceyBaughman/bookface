@@ -2,7 +2,12 @@
 <template>
   <div class="sb-arrange">
     <router-link :to="{ name: 'Profile' }">
-      <img alt="logo" :src="user.picture" class="rounded-image" />
+      <img
+        @click="goTo('Profile')"
+        alt="logo"
+        :src="user.picture"
+        class="rounded-image"
+      />
     </router-link>
 
     <span class="navbar-text">
@@ -25,17 +30,17 @@
         {{ user.name }}
       </div>
       <div class="p-0 list-group w-100">
-        <router-link :to="{ name: 'Home' }">
-          <div
-            aria-describedby="Home"
-            class="list-group-item list-group-item-action hoverable"
-          >
-            Home
-          </div>
-        </router-link>
+        <div
+          @click="goHome()"
+          aria-describedby="Home"
+          class="list-group-item list-group-item-action hoverable"
+        >
+          Home
+        </div>
 
         <router-link :to="{ name: 'Account' }">
           <div
+            @click="goTo('Account')"
             aria-describedby="Manage Account"
             class="list-group-item list-group-item-action hoverable"
           >
@@ -59,10 +64,26 @@
 import { AuthService } from "../services/AuthService";
 import { AppState } from "../AppState";
 import { computed } from "vue";
+import { useRouter } from "vue-router";
+
 export default {
   setup() {
+    const router = useRouter();
     return {
       user: computed(() => AppState.user),
+      account: computed(() => Appstate.account),
+
+      router,
+      async goHome() {
+        try {
+          router.push({
+            name: "Home",
+          });
+        } catch (error) {
+          Pop.toast(error.message, "error");
+          logger.log("[GoHome]", error);
+        }
+      },
       async login() {
         AuthService.loginWithPopup();
       },

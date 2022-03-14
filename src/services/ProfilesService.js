@@ -4,9 +4,9 @@ import { api } from "./AxiosService"
 
 class ProfilesService {
   async getProfile(id) {
-    const res = await api.get(`api/profiles/${id}`)
-    AppState.profile = res.data
+    const res = await api.get(`api/profiles/` + id)
     logger.log('[ProfileServe: getProfile]', res.data)
+    AppState.profile = res.data
   }
 
   async getProfilePosts(id) {

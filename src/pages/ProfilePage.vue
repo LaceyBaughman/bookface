@@ -1,32 +1,47 @@
 <template>
   <div class="container-fluid">
-    <!-- <ProfileData /> -->
-    <div class="col-md-12 px-0">
-      <img :src="profile.coverImg" class="cover-img" alt="..." />
-
-      <img
-        :src="profile.picture"
-        class="profile-img overlap-img rounded"
-        alt=""
-      />
-    </div>
     <!-- FIXME missing profile image, class and alumni status -->
     <div class="col-md-12 post elevation-3 d-flex justify-content-between">
-      <div>
-        <h4 class="card-title">{{ profile.name }}</h4>
+      <div class="col-md-5">
+        <img
+          :src="profile.coverImg"
+          style="height: 300px"
+          class="my-3"
+          alt=""
+        />
+        <h1>
+          <img :src="profile.picture" style="height: 100px" alt="" />
+          {{ profile.name }}
+        </h1>
       </div>
-      <div>
-        <h6>{{ profile.email }}</h6>
-        <p>{{ profile.bio }}</p>
-        <h5>Github:</h5>
-        <span>{{ profile.github }}</span>
-        <h5>LinkedIn:</h5>
-        <span>{{ profile.linkedin }}</span>
-        <!-- FIXME I should not see this if it is not my account -->
+      <ul>
+        <h5>Biography:</h5>
+        <p>{{ profile.bio || "Bio goes here." }}</p>
+
+        <h5>Class:</h5>
+        <p>{{ profile.class || "Class goes here." }}</p>
+
+        <h5>GitHub:</h5>
+        <a :href="profile.github">{{ profile.github || "GitHub goes here" }}</a>
+
+        <h5>Linkedin:</h5>
+        <a :href="profile.linkedin">{{
+          profile.linkedin || "linkedin goes here"
+        }}</a>
+
+        <h5>Resume:</h5>
+        <p>{{ profile.resume || "Resume goes here." }}</p>
+
+        <h5 v-if="profile.graduated">
+          Graduated <i class="mdi mdi-account-check"></i>
+        </h5>
+      </ul>
+
+      <!-- FIXME I should not see this if it is not my profile -->
+      <span>
         <button class="btn btn-primary rounded-pill">
-          <i class="mdi mdi-pencil"></i>
-        </button>
-      </div>
+          <i class="mdi mdi-pencil"></i></button
+      ></span>
     </div>
 
     <div v-if="account.id" class="col-md-12 card post elevation-3">
@@ -109,11 +124,10 @@ export default {
   width: 100px;
 }
 .cover-img {
+  margin-top: 2em;
   height: 20vh;
   object-fit: cover;
-  position: relative;
-  top: 0;
-  left: 0;
+  border-radius: 15px;
 }
 .overlap-img {
   position: absolute;

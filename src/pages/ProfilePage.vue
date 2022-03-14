@@ -10,6 +10,7 @@
         alt=""
       />
     </div>
+    <!-- FIXME missing profile image, class and alumni status -->
     <div class="col-md-12 post elevation-3 d-flex justify-content-between">
       <div>
         <h4 class="card-title">{{ profile.name }}</h4>
@@ -21,6 +22,7 @@
         <span>{{ profile.github }}</span>
         <h5>LinkedIn:</h5>
         <span>{{ profile.linkedin }}</span>
+        <!-- FIXME I should not see this if it is not my account -->
         <button class="btn btn-primary rounded-pill">
           <i class="mdi mdi-pencil"></i>
         </button>
@@ -62,6 +64,7 @@ import { postsService } from "../services/PostsService";
 export default {
   name: "Profile",
   setup() {
+    const route = useRoute();
     onMounted(async () => {
       try {
         await profilesService.getProfilePosts(route.params.id);
@@ -70,7 +73,6 @@ export default {
         Pop.toast(error.message, "error");
       }
     });
-    const route = useRoute;
     watchEffect(async () => {
       try {
         if (route.name == "Profile") {
@@ -85,7 +87,7 @@ export default {
       account: computed(() => AppState.account),
       profile: computed(() => AppState.profile),
       profilePosts: computed(() => AppState.profilePosts),
-      posts: computed(() => AppState.posts),
+      posts: computed(() => AppState.profilePosts),
       totalPages: computed(() => AppState.totalPages),
       async getPage(page) {
         try {

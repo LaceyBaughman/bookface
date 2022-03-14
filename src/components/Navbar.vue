@@ -13,7 +13,7 @@
       <div class="form-group d-flex align-items-center">
         <label for="search" class="sr-only"></label>
         <input
-          v-model="query"
+          v-model="searchTerm"
           type="text"
           name="search"
           required
@@ -42,12 +42,13 @@ export default {
       searchTerm,
       async search() {
         try {
-          await postsService.getAllPosts({ query: searchTerm.value });
+          await postsService.search(searchTerm.value);
         } catch (error) {
           logger.error("[NavSearch]", error);
           Pop.toast(error.message, "error");
         }
       },
+      searchTerm,
       async login() {
         AuthService.loginWithPopup();
       },

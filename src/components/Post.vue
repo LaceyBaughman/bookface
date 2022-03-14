@@ -3,14 +3,15 @@
     <div
       class="body d-flex flex-row align-items-center justify-content-between"
     >
-      <router-link :to="{ name: 'Profile' }">
-        <img
-          @click="goTo('Profile')"
-          :src="post.creator.picture"
-          class="rounded-image"
-          width="50"
-        />
-      </router-link>
+      <!-- <router-link: :to="{ name: 'Profile' }"> -->
+      <img
+        @click="goTo()"
+        :src="post.creator.picture"
+        class="rounded-image hoverable"
+        width="50"
+      />
+      <!-- </router-link:> -->
+
       <div class="d-flex flex-column">
         <h4 class="name font-weight-bold mx-2">{{ post.creator.name }}</h4>
       </div>
@@ -62,10 +63,10 @@ export default {
       account: computed(() => AppState.account),
       posts: computed(() => AppState.posts),
       router,
-      async gotTo(page) {
+      async gotTo() {
         router.push({
-          name: page,
-          params: { id: props.post.creator.id },
+          name: "Profile",
+          params: { id: props.post.creatorId },
         });
       },
       async like(id) {
@@ -122,5 +123,9 @@ hr {
 
 .post-footer {
   flex-direction: row;
+}
+
+.hoverable {
+  cursor: pointer;
 }
 </style>

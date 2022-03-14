@@ -8,12 +8,10 @@ class PostsService {
   async getAllPosts(query = {}) {
     const res = await api.get('api/posts', { params: query })
     logger.log('[PostsService:]', res.data)
-
     AppState.posts = res.data.posts
+    AppState.totalPages = res.data.totalPages
     // AppState.posts = res.data.posts.map(p => new Post(p))
   }
-
-
 
   async createPost(data) {
     const res = await api.post('api/posts', data)
@@ -35,10 +33,15 @@ class PostsService {
     posts.splice(index, 1, res.data)
     // logger.log('[PostServe: Like]', res.data)
   }
-  async getPages(data) {
-    const res = await api.get(data)
-    AppState.posts = res.data
-    logger.log('[PostServ: Get Pages]', res.data)
+  async changePage(page) {
+    const res = await api.get(`api/posts/?page=${page}`)
+    AppState.posts = res.data.posts
+  }
+
+  async search(query) {
+    const res = await api(`api/posts/?query=${query}`)
+    console.log('filter post res', res)
+    AppState.posts = res.data.posts
   }
 }
 

@@ -12,7 +12,7 @@
         v-model="state.editable.body"
       ></textarea>
     </div>
-    <div class="for-the-love-of-god d-inline">
+    <div class="d-inline">
       <label for="img" class="form-label">Add Image:</label>
 
       <input

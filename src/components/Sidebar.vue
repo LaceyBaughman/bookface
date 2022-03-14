@@ -1,7 +1,10 @@
 
 <template>
   <div class="sb-arrange">
-    <router-link :to="{ name: 'Profile' }">
+    <router-link
+      v-if="!user.isAuthenticated"
+      :to="{ name: 'Profile', params: { id: account?.id } }"
+    >
       <img
         @click="goTo('Profile')"
         alt="logo"
@@ -73,7 +76,7 @@ export default {
     const router = useRouter();
     return {
       user: computed(() => AppState.user),
-      account: computed(() => Appstate.account),
+      account: computed(() => AppState.account),
 
       router,
       async goHome() {

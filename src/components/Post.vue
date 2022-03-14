@@ -63,6 +63,7 @@ export default {
       account: computed(() => AppState.account),
       posts: computed(() => AppState.posts),
       async goTo() {
+        debugger;
         router.push({
           name: "Profile",
           params: { id: props.post.creator.id },

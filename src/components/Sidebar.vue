@@ -33,13 +33,15 @@
         {{ user.name }}
       </div>
       <div class="p-0 list-group w-100">
-        <div
-          @click="goHome()"
-          aria-describedby="Home"
-          class="list-group-item list-group-item-action hoverable"
-        >
-          Home
-        </div>
+        <router-link class="navbar-brand d-flex" :to="{ name: 'Home' }">
+          <div
+            @click="goHome()"
+            aria-describedby="Home"
+            class="list-group-item list-group-item-action hoverable"
+          >
+            Home
+          </div>
+        </router-link>
 
         <router-link :to="{ name: 'Account' }">
           <div
@@ -70,6 +72,7 @@ import { computed } from "vue";
 import { useRouter } from "vue-router";
 import Pop from "../utils/Pop";
 import { logger } from "../utils/Logger";
+import { postsService } from "../services/PostsService";
 
 export default {
   setup() {
@@ -81,9 +84,11 @@ export default {
       router,
       async goHome() {
         try {
-          router.push({
-            name: "Home",
-          });
+          await postsService.getAllPosts();
+          // router.push({
+          //   name: "Home",
+          // });
+          //window.location.reload("/Home");
         } catch (error) {
           Pop.toast(error.message, "error");
           logger.log("[GoHome]", error);

@@ -1,50 +1,78 @@
 <template>
   <div class="container-fluid">
     <!-- FIXME missing profile image, class and alumni status -->
-    <div class="col-md-12 post elevation-3 d-flex justify-content-between">
+    <div
+      class="col-lg-12 post elevation-3 d-flex justify-content-between profile"
+    >
       <div class="col-md-5">
-        <img
-          :src="profile.coverImg"
-          style="height: 300px"
-          class="my-3"
-          alt=""
-        />
-        <h1>
-          <img :src="profile.picture" style="height: 100px" alt="" />
-          {{ profile.name }}
-        </h1>
+        <div class="row d-none d-lg-block">
+          <div class="col-md-5">
+            <img
+              :src="profile.coverImg"
+              style="height: 300px"
+              class="my-3"
+              alt=""
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-5 d-none d-lg-block">
+            <img
+              :src="profile.picture"
+              class="profile-img"
+              style="height: 100px"
+              alt=""
+            />
+          </div>
+        </div>
       </div>
-      <ul>
-        <h5>Biography:</h5>
-        <p>{{ profile.bio || "Bio goes here." }}</p>
+      <div class="row">
+        <div class="col-md-5">
+          <h3>{{ profile.name }}</h3>
 
-        <h5>Class:</h5>
-        <p>{{ profile.class || "Class goes here." }}</p>
+          <b>Biography:</b>
+          <p>{{ profile.bio || "Bio goes here." }}</p>
 
-        <h5>GitHub:</h5>
-        <a :href="profile.github">{{ profile.github || "GitHub goes here" }}</a>
+          <b>Class:</b>
+          <p>{{ profile.class || "Class goes here." }}</p>
 
-        <h5>Linkedin:</h5>
-        <a :href="profile.linkedin">{{
-          profile.linkedin || "linkedin goes here"
-        }}</a>
+          <b>GitHub:</b>
+          <p>
+            <a :href="profile.github">{{
+              profile.github || "GitHub goes here."
+            }}</a>
+          </p>
 
-        <h5>Resume:</h5>
-        <p>{{ profile.resume || "Resume goes here." }}</p>
+          <b>Linkedin:</b>
+          <p>
+            <a :href="profile.linkedin">{{
+              profile.linkedin || "Linkedin goes here."
+            }}</a>
+          </p>
 
-        <h5 v-if="profile.graduated">
-          Graduated <i class="mdi mdi-account-check"></i>
-        </h5>
-      </ul>
+          <b>Resume:</b>
+          <p>{{ profile.resume || "Resume goes here." }}</p>
 
-      <!-- FIXME I should not see this if it is not my profile -->
-      <span>
+          <b v-if="profile.graduated">
+            Graduated <i class="mdi mdi-account-check"></i>
+          </b>
+          <b v-else>
+            Not Graduated <i class="mdi mdi-alpha-x-circle-outline"></i>
+          </b>
+
+          <!-- FIXME I should not see this if it is not my profile -->
+        </div>
+      </div>
+      <span v-if="account.id == profile.id">
         <button class="btn btn-primary rounded-pill">
           <i class="mdi mdi-pencil"></i></button
       ></span>
     </div>
 
-    <div v-if="account.id" class="col-md-12 card post elevation-3">
+    <div
+      v-if="account.id == profile.id"
+      class="col-md-12 card post elevation-3"
+    >
       <CreatePost />
     </div>
     <div div class="d-flex justify-content-center" v-if="totalPages > 1">
@@ -120,28 +148,31 @@ export default {
 
 <style lang="scss" scoped>
 .profile-img {
-  height: 100px;
-  width: 100px;
+  height: 40px;
+  width: 90px;
+  transform: translate(270px, -80px);
+  border-radius: 50%;
 }
 .cover-img {
   margin-top: 2em;
-  height: 20vh;
-  object-fit: cover;
-  border-radius: 15px;
+  max-width: 100%;
+  height: auto;
+  border-radius: 20px;
 }
-.overlap-img {
-  position: absolute;
-  top: 20px;
-  left: 50px;
+
+.profile {
+  height: auto;
 }
 
 .post {
   background-color: rgb(255, 255, 255);
   font-family: "Poppins", sans-serif;
-  font-weight: 300;
+
   padding: 2em;
   margin-top: 2em;
   border-radius: 15px;
+  box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.2),
+    0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .primary {
@@ -150,6 +181,14 @@ export default {
 
 .hoverable {
   cursor: pointer;
+}
+
+h3 {
+  font-weight: 800;
+}
+
+b {
+  font-weight: 900;
 }
 </style>
 

@@ -62,11 +62,10 @@ export default {
     return {
       account: computed(() => AppState.account),
       posts: computed(() => AppState.posts),
-      router,
-      async gotTo() {
+      async goTo() {
         router.push({
           name: "Profile",
-          params: { id: props.post.creatorId },
+          params: { id: props.post.creator.id },
         });
       },
       async like(id) {

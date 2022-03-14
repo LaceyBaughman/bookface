@@ -1,39 +1,29 @@
 <template>
-  <div class="container-fluid px-0">
-    <div class="row px-0">
-      <img :src="coverImg" class="my-2 cover-img" alt="..." />
-      <div class="card-img-overlay d-flex">
-        <div>
-          <img :src="profile.picture" class="profile-img rounded" alt="" />
-        </div>
-        <div
-          class="
-            col-md-12
-            card
-            post
-            elevation-3
-            m-2
-            d-flex
-            justify-content-between
-          "
-        >
-          <div>
-            <h4 class="card-title">{{ profile.name }}</h4>
-            <h6 class="card-title">{{ profile.email }}</h6>
-            <p class="card-text">{{ profile.bio }}</p>
-          </div>
-          <div>
-            <button class="btn btn-outline-warning rounded-pill">
-              <i class="mdi mdi-pencil"></i>
-            </button>
-          </div>
-        </div>
+  <div class="container-fluid">
+    <!-- <ProfileData /> -->
+    <div class="col-md-12 px-0">
+      <img :src="profile.coverImg" class="cover-img" alt="..." />
+
+      <img
+        :src="profile.picture"
+        class="profile-img overlap-img rounded"
+        alt=""
+      />
+    </div>
+    <div class="col-md-12 post elevation-3 d-flex justify-content-between">
+      <div>
+        <h4 class="card-title">{{ profile.name }}</h4>
       </div>
       <div>
+        <h6>{{ profile.email }}</h6>
+        <p>{{ profile.bio }}</p>
         <h5>Github:</h5>
         <span>{{ profile.github }}</span>
         <h5>LinkedIn:</h5>
         <span>{{ profile.linkedin }}</span>
+        <button class="btn btn-primary rounded-pill">
+          <i class="mdi mdi-pencil"></i>
+        </button>
       </div>
     </div>
 
@@ -51,8 +41,9 @@
         {{ p }}
       </button>
     </div>
+
     <div class="col-md-12 card post elevation-3" v-for="p in posts" :key="p.id">
-      <Post v-for="p in posts" :key="p.id" :post="p" />
+      <Post :post="p" />
     </div>
   </div>
 </template>
@@ -71,15 +62,19 @@ import { postsService } from "../services/PostsService";
 export default {
   name: "Profile",
   setup() {
+    onMounted(async () => {
+      try {
+        await profilesService.getProfilePosts(route.params.id);
+      } catch (error) {
+        console.error(error);
+        Pop.toast(error.message, "error");
+      }
+    });
     const route = useRoute;
     watchEffect(async () => {
       try {
         if (route.name == "Profile") {
           await profilesService.getProfile(route.params.id);
-          await postService.getAll(
-            "api/posts",
-            "?creatorId=" + route.params.id
-          );
         }
       } catch (error) {
         Pop.toast(error.message, "error");
@@ -112,9 +107,16 @@ export default {
   width: 100px;
 }
 .cover-img {
-  width: 100%;
-  height: 19vh;
+  height: 20vh;
   object-fit: cover;
+  position: relative;
+  top: 0;
+  left: 0;
+}
+.overlap-img {
+  position: absolute;
+  top: 20px;
+  left: 50px;
 }
 
 .post {

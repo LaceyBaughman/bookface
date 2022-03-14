@@ -65,6 +65,8 @@ import { AuthService } from "../services/AuthService";
 import { AppState } from "../AppState";
 import { computed } from "vue";
 import { useRouter } from "vue-router";
+import Pop from "../utils/Pop";
+import { logger } from "../utils/Logger";
 
 export default {
   setup() {
